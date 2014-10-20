@@ -1,0 +1,157 @@
+(program 
+   (const-defs 
+      (const 
+         (id-decl mId MATRIX 3 3) 
+         (vector-literal 
+            (vector-literal (int-literal 1) (int-literal 0) (int-literal 0)) 
+            (vector-literal (int-literal 0) (int-literal 1) (int-literal 0)) 
+            (vector-literal (int-literal 0) (int-literal 0) (int-literal 1))))) 
+   (func-defs 
+      (func-def 
+         (id-decl suma_cuadrados INTEGER  ) 
+         (params 
+            (id-decl x INTEGER  ) 
+            (id-decl y INTEGER  )) 
+         (body 
+            (+ 
+               (~a-la~ (id-literal x) (int-literal 2)) 
+               (~a-la~ (id-literal y) (int-literal 2))))) 
+
+      (func-def 
+         (id-decl diagonal SYMBOL  ) 
+         (params (id-decl m MATRIX 3 3)) 
+         (body 
+            (func-call 
+               (id-literal diagonal_aux) 
+               (params 
+                  (id-literal m) 
+                  (int-literal 3) 
+                  (int-literal 0))))) 
+
+      (func-def 
+         (id-decl diagonal_aux SYMBOL  ) 
+         (params 
+            (id-decl m MATRIX 3 3) 
+            (id-decl dim INTEGER  ) 
+            (id-decl i INTEGER  )) 
+         (body 
+            (cond 
+               (> 
+                  (id-literal i) 
+                  (id-literal dim)) 
+               (symbol-literal $si)) 
+            (cond 
+               (!= 
+                  (matrix-access 
+                     (id-literal m) 
+                     (id-literal i) 
+                     (id-literal i)) 
+                  (int-literal 1)) 
+               (symbol-literal $no)) 
+            (cond 
+               (= 
+                  (matrix-access 
+                     (id-literal m) 
+                     (id-literal i) 
+                     (id-literal i)) 
+                  (int-literal 1)) 
+               (func-call 
+                  (id-literal diagonal_aux) 
+                  (params 
+                     (id-literal m) 
+                     (id-literal dim) 
+                     (+ (id-literal i) 
+                        (int-literal 1))))))) 
+
+      (func-def 
+         (id-decl promedio REAL  ) 
+         (params 
+            (id-decl v VECTOR 3 )) 
+         (body 
+            (/ 
+               (func-call 
+                  (id-literal sumatoria) 
+                  (params 
+                     (id-literal v) 
+                     (int-literal 0) 
+                     (int-literal 0))) 
+               (cardinality 
+                  (id-literal v))))) 
+
+      (func-def 
+         (id-decl sumatoria INTEGER  ) 
+         (params (id-decl v VECTOR 3 ) 
+            (id-decl i INTEGER  ) 
+            (id-decl acum INTEGER  )) 
+         (body 
+            (cond 
+               (= 
+                  (id-literal i) 
+                  (cardinality 
+                     (id-literal v))) 
+               (id-literal acum)) 
+            (cond 
+               (< 
+                  (id-literal i) 
+                  (cardinality 
+                     (id-literal v))) 
+               (func-call 
+                  (id-literal sumatoria) 
+                  (params 
+                     (id-literal v) 
+                     (+ 
+                        (id-literal i) 
+                        (int-literal 1)) 
+                     (+ 
+                        (id-literal acum) 
+                        (vector-access 
+                           (id-literal v) 
+                           (id-literal i)))))))) 
+
+      (func-def 
+         (id-decl bisiesto SYMBOL  ) 
+         (params (id-decl a INTEGER  )) 
+         (body
+          (cond
+           (~o~ 
+            (~y~ 
+               (= 
+                  (mod 
+                     (id-literal a) 
+                     (int-literal 4)) 
+                  (int-literal 0)) 
+               (~no~ 
+                  (= 
+                     (mod 
+                        (id-literal a) 
+                        (int-literal 100)) 
+                     (int-literal 0)))) 
+            (~y~ 
+               (= 
+                  (mod 
+                     (id-literal a) 
+                     (int-literal 100)) 
+                  (int-literal 0)) 
+               (= 
+                  (mod 
+                     (id-literal a) 
+                     (int-literal 400)) 
+                  (int-literal 0)))) 
+           (symbol-literal $si))))) 
+
+(calc 
+   (func-call 
+      (id-literal diagonal) 
+      (params (id-literal mId))) 
+
+   (= 
+      (* 
+         (+ 
+            (int-literal 2) 
+            (int-literal 3)) 
+         (int-literal 4)) 
+      (+ 
+         (int-literal 2) 
+         (* 
+            (int-literal 3) 
+            (int-literal 4))))))

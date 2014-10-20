@@ -1,0 +1,30 @@
+definición mId:M(3,3) [[1,0,0],[0,1,0],[0,0,1]].
+
+suma_cuadrados(x:Z, y:Z):Z = { (x ~a-la~ 2 + y ~a-la~ 2) }
+
+" determina si la diagonal de una matriz contiene 1s "
+diagonal(m:M(3,3)):S = { diagonal_aux(m, 3, 0) }
+diagonal_aux(m:M(3,3), dim:Z, i:Z):S = {
+    $si ; si i > dim .
+    $no ; si m[i][i] != 1 .
+    diagonal_aux(m, dim, i + 1) ;  si m[i][i] = 1 .
+}
+
+" calcula la media aritmética de los elementos en el vector "
+promedio(v:V(3)):R = { sumatoria(v, 0, 0) / |v| }
+
+" suma todos los elementos en el vector "
+sumatoria(v:V(3), i:Z, acum:Z):Z = {
+    acum ; si i = |v| .
+    sumatoria(v, i + 1, acum + v[i]) ; si i < |v| .
+}
+
+" año bisiesto "
+bisiesto(a:Z):S = {
+    $si ; si (a mod 4 = 0 ~y~ ~no~ a mod 100 = 0) ~o~ (a mod 100 = 0 ~y~ a mod 400 = 0) .
+}
+
+cálculo {
+    diagonal(mId) .
+    (2 + 3) * 4 = 2 + 3 * 4 .
+}
