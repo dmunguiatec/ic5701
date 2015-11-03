@@ -6,7 +6,13 @@ import org.ñ.compiler.parser.ast.visitor.ASTVisitor
 class IdDecl extends ASTNode {
     Token token
     DataType dataType
+    IdCategory category
+
+    // for vectors and matrices
     int dimX, dimY
+
+    // for parameters
+    List<DataType> paramTypes = []
 
     @Override
     void accept(ASTVisitor visitor) {
@@ -15,6 +21,6 @@ class IdDecl extends ASTNode {
 
     @Override
     String toString() {
-        return "(id-decl ${token.text} ${dataType} ${dimX ? dimX : ''} ${dimY ? dimY : ''})"
+        return "(id-decl ${token.text} ${dataType} ${category} ${dimX ? dimX : ''} ${dimY ? dimY : ''} ${paramIndex ? paramIndex : ''})"
     }
 }

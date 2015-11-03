@@ -32,6 +32,7 @@ class ASTBuilder extends ÑBaseVisitor<ASTNode> {
 
         constDef.identifier = visit(ctx.type()) as IdDecl
         constDef.identifier.token = ctx.ID().symbol
+        constDef.identifier.category = IdCategory.CONSTANT
         constDef.value = visit(ctx.expr()) as Expr
 
         return constDef
@@ -42,10 +43,13 @@ class ASTBuilder extends ÑBaseVisitor<ASTNode> {
         FuncDef funcDef = new FuncDef()
         funcDef.identifier = visit(ctx.type()) as IdDecl
         funcDef.identifier.token = ctx.ID().symbol
+        funcDef.identifier.category = IdCategory.FUNCTION
 
-        for (ÑParser.ParamContext paramContext : ctx.param_list().param()) {
+        ctx.param_list().param().eachWithIndex { paramContext, index ->
             IdDecl idDecl = visit(paramContext.type()) as IdDecl
             idDecl.token = paramContext.ID().symbol
+            idDecl.category = IdCategory.PARAMETER
+            funcDef.identifier.paramTypes << idDecl.dataType
             funcDef.params << idDecl
         }
 
@@ -65,6 +69,7 @@ class ASTBuilder extends ÑBaseVisitor<ASTNode> {
         CondExpr condExpr = new CondExpr()
         condExpr.cond = visit(ctx.expr(1)) as Expr
         condExpr.expr = visit(ctx.expr(0)) as Expr
+        condExpr.token = ctx.start
 
         return condExpr
     }
@@ -156,6 +161,7 @@ class ASTBuilder extends ÑBaseVisitor<ASTNode> {
     ASTNode visitCard_call(@NotNull ÑParser.Card_callContext ctx) {
         CardinalityCall cardinalityCall = new CardinalityCall()
         cardinalityCall.expr = visit(ctx.expr()) as Expr
+        cardinalityCall.token = ctx.start
         return cardinalityCall
     }
 
@@ -184,6 +190,7 @@ class ASTBuilder extends ÑBaseVisitor<ASTNode> {
         if (operator) {
             UnaryExpr expr = new UnaryExpr(operatorType: OperatorType.fromPayload(operator.symbol.text))
             expr.operand = visit(ctx.expr(0)) as Expr
+            expr.token = ctx.start
             return expr
         }
 
@@ -192,6 +199,7 @@ class ASTBuilder extends ÑBaseVisitor<ASTNode> {
             BinaryExpr expr = new BinaryExpr(operatorType: OperatorType.fromPayload(operator.symbol.text))
             expr.leftOperand = visit(ctx.expr(0)) as Expr
             expr.rightOperand = visit(ctx.expr(1)) as Expr
+            expr.token = ctx.start
             return expr
         } else {
             return super.visitExpr(ctx) as ASTNode
@@ -199,11 +207,11 @@ class ASTBuilder extends ÑBaseVisitor<ASTNode> {
     }
 
     @Override
-    ASTNode visitPrimary(@NotNull @NotNull ÑParser.PrimaryContext ctx) {
+    ASTNode visitPrimary(@NotNull ÑParser.PrimaryContext ctx) {
         if (ctx.expr()) {
             return visit(ctx.expr())
         } else {
-            return super.visitPrimary(ctx)
+            return super.visitPrimary(ctx) as ASTNode
         }
     }
 

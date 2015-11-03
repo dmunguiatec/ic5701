@@ -1,11 +1,13 @@
 package org.ñ.compiler.parser.ast
 
 import org.ñ.compiler.parser.ast.visitor.ASTVisitor
+import org.ñ.compiler.semantics.symboltable.SymbolTable
 
 class Program extends ASTNode {
     List<ConstDef> constDefs = []
     List<FuncDef> funcDefs = []
     List<Expr> calcBlock = []
+    SymbolTable scope
 
     @Override
     void accept(ASTVisitor visitor) {

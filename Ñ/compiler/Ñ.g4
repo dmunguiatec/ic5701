@@ -63,7 +63,7 @@ cond_expr
 
 expr
     :   primary
-    |   OP_NEG expr
+    |   (OP_NEG | OP_TRANSP) expr
     |   <assoc=right> expr OP_POW expr
     |   expr (OP_DOT | OP_MULT | OP_DIV | OP_QUOT | OP_MOD) expr
     |   expr (OP_ADD | OP_SUB ) expr
@@ -174,6 +174,10 @@ OP_POW
 
 OP_DOT
     :   '·'
+    ;
+
+OP_TRANSP
+    :   '^'
     ;
 
 OP_MULT

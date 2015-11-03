@@ -5,7 +5,6 @@ import org.ñ.compiler.parser.ast.visitor.ASTVisitor
 
 @Canonical
 class ConstDef extends ASTNode {
-    DataType dataType
     IdDecl identifier
     Expr value
 
