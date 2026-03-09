@@ -1,0 +1,23 @@
+definición unidad:Z 1.
+definición identidad:M(3,3) [[1,0,0],[0,1,0],[0,0,1]].
+
+fibonacci(n:Z):Z = {
+   0 ; si n = 0.
+   1 ; si n = 1.
+   fibonacci(n-1) + fibonacci(n-2) ; si n >= 2.
+}
+
+suma-cuadrados(x:Z, y:Z):Z = { x ~a-la~ 2 + y ~a-la~ 2 }
+
+factorial(n:Z):Z = {
+   1 ; si n = 0.
+   n * factorial(n-1) ; si n > 0.
+}
+
+cosα(v1:V(2), v2:V(2)):R = { v1 · v2 / det(v1) * det(v2) }
+
+cálculo {
+   suma-cuadrados(2, 3).
+   factorial(5).
+   cosα([1,2],[-1,-2]).
+}
