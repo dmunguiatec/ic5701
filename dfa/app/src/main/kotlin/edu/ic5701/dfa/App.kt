@@ -5,7 +5,15 @@ package edu.ic5701.dfa
 
 class App {
     fun run() {
-        val code = "count,_temp,x"
+        val code = """
+            coef1 <- 4; coef2 <- -2; coef3 <- 7;
+            x <- 3;
+            term1 <- coef1 * x * x;
+            term2 <- coef2 * x;
+            poly <- term1 + term2 + coef3;
+            print poly;
+        """.trimIndent()
+
         val scanner = Scanner(code)
 
         var token: Token
